@@ -9,7 +9,7 @@ Parado:Do/LeeBluetooth
 
 state Corriendo{
     [*] --> Avanzando
-    Avanzando -up-> [*]: LeeBluetooth[pulsa B]
+    Avanzando -left-> [*]: LeeBluetooth[pulsa B]
 
     Avanzando:Do/Avanzar
     Avanzando:Do/LeeDistancia
