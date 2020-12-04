@@ -1,0 +1,46 @@
+@startuml
+
+actor Client
+boundary MagneticCard
+boundary Semaphore
+control EntryBarrier
+control ExitBarrier
+entity EntranceExit
+entity Parking
+
+Client -> MagneticCard ++:  Use Card
+MagneticCard -> EntryBarrier ++: Enter Card
+deactivate  MagneticCard
+EntryBarrier -> Parking ++: Request space
+alt space > 0
+Parking -> Parking: Add Car
+EntryBarrier -> EntranceExit **: new
+deactivate Parking
+EntryBarrier -> EntryBarrier : Open barrier
+... some seconds ...
+EntryBarrier -> EntryBarrier : Close barrier
+
+else space <= 1
+EntryBarrier -> Semaphore ++: Set Red
+deactivate Semaphore
+end
+deactivate EntryBarrier
+... When Client needs to exit ...
+Client -> MagneticCard ++:  Use Card
+MagneticCard -> ExitBarrier++: Enter Card
+deactivate MagneticCard
+opt isRed
+ExitBarrier -> Semaphore ++: Set Green
+deactivate Semaphore
+end
+ExitBarrier -> Parking ++: Remove Car
+deactivate Parking
+ExitBarrier -> EntranceExit: AddExitTime
+ExitBarrier -> ExitBarrier : Open barrier
+... some seconds ...
+ExitBarrier -> ExitBarrier --: Close barrier
+
+
+
+
+@enduml

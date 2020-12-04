@@ -1,0 +1,53 @@
+@startuml
+'scale 350 width
+[*] --> ProgramaActivo : Iniciar Programa
+ProgramaActivo -up-> [*] : Finalizar Programa
+state ProgramaActivo{
+ProgramaActivo:Do/LeeBluetooth
+state Parado
+state Corriendo{
+    [*] --> Avanzando
+
+    Avanzando:Do/Avanzar
+    Avanzando:Do/LeeDistancia
+
+    state Avanzando
+
+    state GirandoIzq
+    GirandoIzq:Do/GirarIzq
+    state GirandoDer
+    GirandoDer:Do/GirarDer
+
+    state "Analizando Obstaculo" as Obstaculo{
+      state "Mirando Izquierda" as Izq
+      state "Leyendo Distancia Izq" as DistIzq
+      state "Mirando Derecha" as Der
+      state "Leyendo Distancia Der" as DistDer
+
+      Izq:Do/MoverServoIzq
+      Der:Do/MoverServoDer
+      DistIzq:Do/LeerDistancia
+      DistDer:Do/LeerDistancia
+
+      [*] --> Izq : /Para
+      Izq --> DistIzq : PosicionFijada
+      DistIzq --> DistIzq : LeeDistancia[dist = 0]
+      DistIzq --> Der : LeeDistancia[dist > 0]
+      Der --> DistDer : PosicionFijada
+      DistDer --> DistDer : LeeDistancia[dist = 0]
+      DistDer --> [*] : LeeDistancia[dist > 0]
+    }
+    state DondeGirar <<choice>>
+}
+}
+Parado --> Corriendo : LeeBluetooth[pulsa A]
+Corriendo --> Parado : LeeBluetooth[pulsa B]
+Avanzando --> Avanzando : LeeDistancia[dist >= 50]
+Avanzando --> Obstaculo : LeeDistancia[dist > 0 && dist < 50]
+Obstaculo --> DondeGirar
+DondeGirar --> GirandoIzq : [distIzq > distDer]
+DondeGirar --> GirandoDer : [distIzq <= distDer]
+GirandoIzq --> Avanzando : Tras t1 tiempo
+GirandoDer --> Avanzando : Tras t1 tiempo
+
+@enduml
