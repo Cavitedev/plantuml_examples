@@ -3,13 +3,17 @@
 [*] --> ProgramaActivo : Iniciar Programa
 ProgramaActivo -up-> [*] : Finalizar Programa
 state ProgramaActivo{
-ProgramaActivo:Do/LeeBluetooth
 state Parado
+Parado:Do/LeeBluetooth
+[*] -right-> Parado
+
 state Corriendo{
     [*] --> Avanzando
+    Avanzando -up-> [*]: LeeBluetooth[pulsa B]
 
     Avanzando:Do/Avanzar
     Avanzando:Do/LeeDistancia
+    Avanzando:Do/LeeBluetooth
 
     state Avanzando
 
@@ -41,7 +45,7 @@ state Corriendo{
 }
 }
 Parado --> Corriendo : LeeBluetooth[pulsa A]
-Corriendo --> Parado : LeeBluetooth[pulsa B]
+Corriendo --> Parado
 Avanzando --> Avanzando : LeeDistancia[dist >= 50]
 Avanzando --> Obstaculo : LeeDistancia[dist > 0 && dist < 50]
 Obstaculo --> DondeGirar
