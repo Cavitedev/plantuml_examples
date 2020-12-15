@@ -1,0 +1,16 @@
+@startuml
+scale 800 height
+[*] --> Empty : Add
+Empty -> [*] : Remove from system
+
+Empty --> Reserved : Reserve
+Empty -left-> Maintenance : Maintainance required
+Maintenance -right-> Empty : Fixed
+
+Reserved --> Occupied : Check in
+Reserved ---> Empty : Cancel
+
+Occupied --> Empty : Check out
+
+
+@enduml

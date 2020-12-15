@@ -7,19 +7,12 @@ Draft --> Pending : Save
 state Pending {
 
   state "Technical Review" as TechnicalReview
-  state "President Review" as PresidentReview
+  state "President Review" as PresidentoReview
 
   [*] --> TechnicalReview
   TechnicalReview --> PresidentReview : Reviewed by technician
   PresidentReview --> [*] : Reviewed by president
 }
-state "Not Valid" as NotValid
-Pending --> NotValid : Rejected
-NotValid -> Draft : Edit
-
-Pending --> Draft : Edit
-
-Pending -right-> Approved
 
 Approved -> [*]
 
