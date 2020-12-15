@@ -1,0 +1,19 @@
+@startuml
+
+OrderEntry -# gr
+
+Component "Some Group" as gr {
+
+
+HTTP -# [First Component]
+HTTP .right-> [First Component]
+[Another Component] -( HTTP
+}
+
+package "Other Groups" {
+FTP - [Second Component]
+
+[First Component] --( FTP
+}
+
+@enduml

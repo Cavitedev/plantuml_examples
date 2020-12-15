@@ -1,0 +1,26 @@
+@startuml
+scale 350 width
+[*] --> Draft : New
+
+Draft --> Pending : Save
+
+state Pending {
+
+  state "Technical Review" as TechnicalReview
+  state "President Review" as PresidentReview
+
+  [*] --> TechnicalReview
+  TechnicalReview --> PresidentReview : Reviewed by technician
+  PresidentReview --> [*] : Reviewed by president
+}
+state "Not Valid" as NotValid
+Pending --> NotValid : Rejected
+NotValid -> Draft : Edit
+
+Pending --> Draft : Edit
+
+Pending -right-> Approved
+
+Approved -> [*]
+
+@enduml
