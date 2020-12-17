@@ -1,0 +1,48 @@
+@startuml
+
+scale 650 width
+
+actor Neighbour
+boundary UI_Payment
+control Control_Payment
+entity Payment
+entity Accounts
+
+Neighbour -> UI_Payment : View Payment
+UI_Payment -> Control_Payment ++: Ask Payment
+Control_Payment -> Payment ++: Get Payment
+return Payment
+return Show Payment
+
+Neighbour -> UI_Payment : Confirm Payment
+UI_Payment -> Control_Payment ++: Ask Accounts
+Control_Payment -> Accounts ++: getAccounts
+return Accounts
+return Display Accounts
+
+Neighbour -> UI_Payment : Select Account
+UI_Payment -> Control_Payment ++: Set Account
+return Show Account
+
+Neighbour -> UI_Payment : Select Payment Method
+
+UI_Payment -> Control_Payment : Ask Perform Payment
+
+alt Transference
+
+Control_Payment -> Accounts :Perform Transference(Account)
+
+else Credit Card
+
+Control_Payment -> Accounts : Pay credit card (Account)
+
+end
+
+Accounts --> Control_Payment : Payed
+Control_Payment -> Payment : Set Payed
+Control_Payment --> UI_Payment : Print Result
+
+
+
+
+@enduml
