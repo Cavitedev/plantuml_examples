@@ -2,7 +2,7 @@
 
 OrderEntry -# gr
 
-Component "Some Group" as gr {
+Component "Some [[file:///C:/ab]] Group" as gr {
 
 
 HTTP -# [First Component]
@@ -10,7 +10,7 @@ HTTP .right-> [First Component]
 [Another Component] -( HTTP
 }
 
-package "Other Groups" {
+package "Other  Groups" {
 FTP - [Second Component]
 
 [First Component] --( FTP

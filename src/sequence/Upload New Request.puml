@@ -1,0 +1,38 @@
+@startuml
+
+scale 650 width
+
+actor User
+'actor Technician
+'actor President
+boundary UI_Request
+control Control_Request
+entity E_Request
+entity E_ListRequests
+
+User -> UI_Request ++: Add Request
+UI_Request -> Control_Request ++: Create Request
+Control_Request  -> E_Request ** : New
+Control_Request --> UI_Request --: Empty Form
+deactivate UI_Request
+
+
+Loop User has not finished
+User -> UI_Request ++: Update Form
+UI_Request -> Control_Request ++: Update Request
+Control_Request -> E_Request ++: Update Request
+return Updated Request
+return Display Updated Info
+deactivate UI_Request
+end
+'Loop
+
+User -> UI_Request ++: Save
+UI_Request -> Control_Request ++: Save Request
+deactivate UI_Request
+Control_Request -> E_Request ++: Get Request
+return : Request
+Control_Request -> E_ListRequests --: Save Request
+
+
+@enduml
